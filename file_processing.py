@@ -37,7 +37,11 @@ REGISTER_EXTENSIONS = {
 FOLDERS = []
 EXTENSIONS = set()
 UNKNOWN = set()
-FILE_LIST = []
+IMAGES_FILE = []
+VIDEO_FILE = []
+DOCUMENTS_FILE = []
+AUDIO_FILE = []
+MY_OTHER_FILE = []
 
 
 def get_extension(filename: str) -> str:
@@ -59,7 +63,19 @@ def scan(folder: Path) -> None:
 
         # Робота з файлом
         ext = get_extension(item.name)  # взяти розширення
-        FILE_LIST.append(item.name)
+
+        if ext in ('JPEG', 'PNG', 'JPG', 'SVG'):
+            IMAGES_FILE.append(item.name)
+        if ext in ('AVI', 'MP4', 'MOV', 'MKV'):
+            VIDEO_FILE.append(item.name)
+        if ext in ('DOC', 'DOCX', 'TXT', 'PDF', 'XLSX', 'PPTX'):
+            DOCUMENTS_FILE.append(item.name)
+        if ext in ('MP3', 'OGG', 'WAV', 'AMR'):
+            AUDIO_FILE.append(item.name)
+        if ext not in ('MP3', 'OGG', 'WAV', 'AMR', 'JPEG', 'PNG', 'JPG', 'SVG', 'AVI', 'MP4', 'MOV', 'MKV',
+                       'DOC', 'DOCX', 'TXT', 'PDF', 'XLSX', 'PPTX'):
+            MY_OTHER_FILE.append(item.name)
+
         fullname = folder / item.name  # взяти повний шлях до файлу
         if not ext:  # якщо файл не має розширення додати до невідомих
             MY_OTHER.append(fullname)
@@ -87,7 +103,12 @@ if __name__ == '__main__':
 
     scan(Path(folder_for_scan))  # викликаємо функці. з консолі
 
-    print(f'File list: {FILE_LIST}')
+    print(f'images: {IMAGES_FILE}')
+    print(f'video: {VIDEO_FILE}')
+    print(f'docs: {DOCUMENTS_FILE}')
+    print(f'audio: {AUDIO_FILE}')
+    print(f'other file: {MY_OTHER_FILE}')
+
     print(f'Types of files in folder: {EXTENSIONS}')
     print(f'Unknown files of types: {UNKNOWN}')
 
